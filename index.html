@@ -3,363 +3,185 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Honeywell Global Program — Executive Dashboard</title>
+<title>Honeywell Global Program &mdash; Executive Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; background: #f5f5f2; padding: 24px; color: #2C2C2A; }
-  .dash { max-width: 1200px; margin: 0 auto; }
-
-  /* Header */
-  .hdr { background: #0D1B3E; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
-  .hdr-title { font-size: 20px; font-weight: 500; color: #fff; }
-  .hdr-sub { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 3px; }
-  .hdr-badges { display: flex; gap: 10px; flex-wrap: wrap; }
-  .hdr-badge { background: rgba(255,255,255,0.12); border-radius: 6px; padding: 8px 16px; text-align: center; min-width: 100px; }
-  .hdr-badge-val { font-size: 18px; font-weight: 500; color: #fff; }
-  .hdr-badge-lbl { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 2px; }
-
-  /* Section labels */
-  .section-label { font-size: 10px; font-weight: 500; color: #5F5E5A; text-transform: uppercase; letter-spacing: 0.07em; margin: 18px 0 10px; }
-
-  /* KPI grids */
-  .kpi-grid   { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 14px; }
-  .kpi-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-bottom: 14px; }
-  @media (max-width: 800px) {
-    .kpi-grid   { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .kpi-grid-2 { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 480px) {
-    .kpi-grid { grid-template-columns: 1fr; }
-  }
-  .kpi { background: #fff; border-radius: 8px; padding: 14px 16px; border: 0.5px solid #D3D1C7; }
-  .kpi-label { font-size: 11px; color: #888780; margin-bottom: 4px; }
-  .kpi-val { font-size: 21px; font-weight: 500; color: #2C2C2A; line-height: 1.2; }
-  .kpi-val.g { color: #0F6E56; }
-  .kpi-val.r { color: #993C1D; }
-  .kpi-val.b { color: #185FA5; }
-  .kpi-val.a { color: #854F0B; }
-  .kpi-sub { font-size: 11px; color: #888780; margin-top: 4px; }
-  .kpi-sub.up { color: #0F6E56; }
-  .kpi-sub.dn { color: #993C1D; }
-
-  /* Chart grid */
-  .chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; margin-bottom: 14px; }
-  .chart-grid.single { grid-template-columns: 1fr; }
-  @media (max-width: 800px) { .chart-grid { grid-template-columns: 1fr; } }
-  .chart-box { background: #fff; border: 0.5px solid #D3D1C7; border-radius: 10px; padding: 16px 18px; }
-  .chart-box.full { grid-column: 1 / -1; }
-  .ct { font-size: 13px; font-weight: 500; color: #2C2C2A; margin-bottom: 3px; }
-  .cs { font-size: 11px; color: #888780; margin-bottom: 10px; }
-  .leg { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; font-size: 11px; color: #5F5E5A; }
-  .lsq { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 3px; vertical-align: middle; }
-
-  /* Divider */
-  .divider { border: none; border-top: 1px solid #D3D1C7; margin: 22px 0 6px; }
-
-  /* Footer note */
-  .footer-note { background: #EBF3FC; border-radius: 8px; padding: 12px 16px; font-size: 12px; color: #0C447C; border: 0.5px solid #B5D4F4; margin-top: 20px; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f5f5f2;padding:24px;color:#2C2C2A}
+.dash{max-width:1200px;margin:0 auto}
+.hdr{background:#0D1B3E;border-radius:10px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.hdr-title{font-size:20px;font-weight:500;color:#fff}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,0.6);margin-top:3px}
+.hdr-badges{display:flex;gap:10px;flex-wrap:wrap}
+.hdr-badge{background:rgba(255,255,255,0.12);border-radius:6px;padding:8px 16px;text-align:center;min-width:100px}
+.hdr-badge-val{font-size:18px;font-weight:500;color:#fff}
+.hdr-badge-lbl{font-size:10px;color:rgba(255,255,255,0.6);margin-top:2px}
+.sl{font-size:10px;font-weight:500;color:#5F5E5A;text-transform:uppercase;letter-spacing:.07em;margin:18px 0 10px}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.kpi-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
+@media(max-width:800px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.kpi-grid-2{grid-template-columns:1fr}}
+@media(max-width:480px){.kpi-grid{grid-template-columns:1fr}}
+.kpi{background:#fff;border-radius:8px;padding:14px 16px;border:.5px solid #D3D1C7}
+.kpi-label{font-size:11px;color:#888780;margin-bottom:4px}
+.kpi-val{font-size:21px;font-weight:500;color:#2C2C2A;line-height:1.2}
+.kpi-val.g{color:#0F6E56}.kpi-val.r{color:#993C1D}.kpi-val.b{color:#185FA5}.kpi-val.a{color:#854F0B}
+.kpi-sub{font-size:11px;color:#888780;margin-top:4px}
+.kpi-sub.up{color:#0F6E56}.kpi-sub.dn{color:#993C1D}
+.cg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}
+@media(max-width:800px){.cg{grid-template-columns:1fr}}
+.cb{background:#fff;border:.5px solid #D3D1C7;border-radius:10px;padding:16px 18px}
+.ct{font-size:13px;font-weight:500;color:#2C2C2A;margin-bottom:3px}
+.cs{font-size:11px;color:#888780;margin-bottom:10px}
+.leg{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;font-size:11px;color:#5F5E5A}
+.lsq{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:3px;vertical-align:middle}
+.divider{border:none;border-top:1px solid #D3D1C7;margin:22px 0 6px}
+.fn{background:#EBF3FC;border-radius:8px;padding:12px 16px;font-size:12px;color:#0C447C;border:.5px solid #B5D4F4;margin-top:20px}
+.rt{font-size:11px;color:#888780;text-align:right;margin-top:14px}
 </style>
 </head>
 <body>
 <div class="dash">
 
-  <!-- ── HEADER ── -->
-  <div class="hdr">
-    <div>
-      <div class="hdr-title">Honeywell Global Program — Executive Dashboard</div>
-      <div class="hdr-sub">YTD 2026 · As of April 13, 2026</div>
-    </div>
-    <div class="hdr-badges">
-      <div class="hdr-badge"><div class="hdr-badge-val">$47.5M</div><div class="hdr-badge-lbl">YTD Revenue</div></div>
-      <div class="hdr-badge"><div class="hdr-badge-val">26.5%</div><div class="hdr-badge-lbl">PGM %</div></div>
-      <div class="hdr-badge"><div class="hdr-badge-val">$8.82M</div><div class="hdr-badge-lbl">Past Due $</div></div>
-      <div class="hdr-badge"><div class="hdr-badge-val">5,001</div><div class="hdr-badge-lbl">Past Due Lines</div></div>
-    </div>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">Honeywell Global Program &mdash; Executive Dashboard</div>
+    <div class="hdr-sub">YTD 2026 &middot; As of April 15, 2026</div>
   </div>
-
-  <!-- ── REVENUE & MARGIN ── -->
-  <div class="section-label">Revenue &amp; Margin Performance</div>
-  <div class="kpi-grid">
-    <div class="kpi">
-      <div class="kpi-label">YTD Revenue</div>
-      <div class="kpi-val g">$47.5M</div>
-      <div class="kpi-sub up">+$7.5M vs baseline plan ($40.0M)</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">vs 2025 same period</div>
-      <div class="kpi-val g">+$10.8M</div>
-      <div class="kpi-sub up">2025 YTD was $36.6M · +29.5% YoY</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Program Gross Margin</div>
-      <div class="kpi-val g">26.5%</div>
-      <div class="kpi-sub up">+240bps above baseline (24.1%)</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Total Book Value</div>
-      <div class="kpi-val b">$100.5M</div>
-      <div class="kpi-sub">Backlog: $91.4M · 26,356 lines</div>
-    </div>
+  <div class="hdr-badges">
+    <div class="hdr-badge"><div class="hdr-badge-val">$48.3M</div><div class="hdr-badge-lbl">YTD Revenue</div></div>
+    <div class="hdr-badge"><div class="hdr-badge-val">26.5%</div><div class="hdr-badge-lbl">PGM %</div></div>
+    <div class="hdr-badge"><div class="hdr-badge-val">$8.4M</div><div class="hdr-badge-lbl">Past Due $</div></div>
+    <div class="hdr-badge"><div class="hdr-badge-val">4,942</div><div class="hdr-badge-lbl">Past Due Lines</div></div>
   </div>
+</div>
 
-  <div class="chart-grid">
-    <div class="chart-box">
-      <div class="ct">YTD Revenue vs Baseline Plan ($M)</div>
-      <div class="cs">Cumulative 2026 · running $7.5M ahead of plan</div>
-      <div class="leg">
-        <span><span class="lsq" style="background:#185FA5;"></span>Actual revenue</span>
-        <span><span class="lsq" style="background:#AAAAAA;border:1px dashed #888;"></span>Baseline plan</span>
-      </div>
-      <div style="position:relative;width:100%;height:240px;">
-        <canvas id="revChart" role="img" aria-label="YTD Revenue vs Baseline Plan line chart"></canvas>
-      </div>
-    </div>
-    <div class="chart-box">
-      <div class="ct">PGM % vs Baseline Plan</div>
-      <div class="cs">Consistently outperforming · peaked at 32.4% in late January</div>
-      <div class="leg">
-        <span><span class="lsq" style="background:#0F7A58;"></span>Actual PGM %</span>
-        <span><span class="lsq" style="background:#AAAAAA;border:1px dashed #888;"></span>Baseline plan</span>
-      </div>
-      <div style="position:relative;width:100%;height:240px;">
-        <canvas id="pgmChart" role="img" aria-label="PGM percentage vs baseline plan line chart"></canvas>
-      </div>
-    </div>
+<div class="sl">Revenue &amp; Margin Performance</div>
+<div class="kpi-grid">
+  <div class="kpi"><div class="kpi-label">YTD Revenue</div><div class="kpi-val g">$48.3M</div><div class="kpi-sub up">+$7.8M vs baseline plan ($40.6M)</div></div>
+  <div class="kpi"><div class="kpi-label">vs 2025 same period</div><div class="kpi-val g">+$10.3M</div><div class="kpi-sub up">2025 YTD was $38.1M &middot; +27.0% YoY</div></div>
+  <div class="kpi"><div class="kpi-label">Program Gross Margin</div><div class="kpi-val g">26.5%</div><div class="kpi-sub up">+240bps above baseline (24.1%)</div></div>
+  <div class="kpi"><div class="kpi-label">Total Book Value</div><div class="kpi-val b">$100.2M</div><div class="kpi-sub">Backlog: $91.3M &middot; 26,264 lines</div></div>
+</div>
+
+<div class="cg">
+  <div class="cb">
+    <div class="ct">YTD Revenue vs Baseline Plan ($M)</div>
+    <div class="cs">Cumulative 2026 &middot; +$7.8M vs baseline plan ($40.6M)</div>
+    <div class="leg"><span><span class="lsq" style="background:#185FA5"></span>Actual revenue</span><span><span class="lsq" style="background:#AAAAAA;border:1px dashed #888"></span>Baseline plan</span></div>
+    <div style="position:relative;width:100%;height:240px"><canvas id="revChart" role="img" aria-label="YTD Revenue vs Baseline Plan"></canvas></div>
   </div>
-
-  <!-- ── PO PAST DUES ── -->
-  <hr class="divider">
-  <div class="section-label">Past Due Analysis — PO Orders (Planned Commitments)</div>
-  <div class="kpi-grid">
-    <div class="kpi">
-      <div class="kpi-label">PO Past Due Lines</div>
-      <div class="kpi-val r">3,027</div>
-      <div class="kpi-sub dn">of 28,401 total PO lines · 10.7%</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">PO Past Due $</div>
-      <div class="kpi-val r">$7.62M</div>
-      <div class="kpi-sub dn">86.4% of total past due dollars</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">#1 Function Owner</div>
-      <div class="kpi-val r">Supply Chain</div>
-      <div class="kpi-sub dn">1,059 lines · $3.98M · 52% of PO past due $</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">#1 Customer at Risk</div>
-      <div class="kpi-val r">HW Engines</div>
-      <div class="kpi-sub dn">247 lines · $2.74M · 36% of PO past due $</div>
-    </div>
+  <div class="cb">
+    <div class="ct">PGM % vs Baseline Plan</div>
+    <div class="cs">+240bps above baseline (24.1%)</div>
+    <div class="leg"><span><span class="lsq" style="background:#0F7A58"></span>Actual PGM %</span><span><span class="lsq" style="background:#AAAAAA;border:1px dashed #888"></span>Baseline plan</span></div>
+    <div style="position:relative;width:100%;height:240px"><canvas id="pgmChart" role="img" aria-label="PGM % vs Baseline Plan"></canvas></div>
   </div>
+</div>
 
-  <div class="chart-grid">
-    <div class="chart-box">
-      <div class="ct">PO Past Due by Function — Lines &amp; Dollars</div>
-      <div class="cs">ActionBy ownership · who holds the execution miss</div>
-      <div class="leg">
-        <span><span class="lsq" style="background:#4A3FBF;"></span>$ impact</span>
-        <span><span class="lsq" style="background:rgba(61,170,132,0.85);"></span>line count</span>
-      </div>
-      <div style="position:relative;width:100%;height:280px;">
-        <canvas id="poFuncChart" role="img" aria-label="PO Past Due by Function bar chart"></canvas>
-      </div>
-    </div>
-    <div class="chart-box">
-      <div class="ct">PO Past Due by Site — Top 10</div>
-      <div class="cs">Financial impact per Honeywell site</div>
-      <div style="position:relative;width:100%;height:280px;">
-        <canvas id="poSiteChart" role="img" aria-label="PO Past Due by Site bar chart"></canvas>
-      </div>
-    </div>
+<hr class="divider">
+<div class="sl">Past Due Analysis &mdash; PO Orders (Planned Commitments)</div>
+<div class="kpi-grid">
+  <div class="kpi"><div class="kpi-label">PO Past Due Lines</div><div class="kpi-val r">2,970</div><div class="kpi-sub dn">of 28,358 total PO lines &middot; 10.5%</div></div>
+  <div class="kpi"><div class="kpi-label">PO Past Due $</div><div class="kpi-val r">$7.1M</div><div class="kpi-sub dn">84.8% of total past due dollars</div></div>
+  <div class="kpi"><div class="kpi-label">#1 Function Owner</div><div class="kpi-val r">SUPPLY CHAIN</div><div class="kpi-sub dn">1,363 lines &middot; $4.3M &middot; 59.9% of PO past due $</div></div>
+  <div class="kpi"><div class="kpi-label">#1 Customer at Risk</div><div class="kpi-val r">Engines</div><div class="kpi-sub dn">238 lines &middot; $2.7M &middot; 38.3% of PO past due $</div></div>
+</div>
+
+<div class="cg">
+  <div class="cb">
+    <div class="ct">PO Past Due by Function &mdash; Lines &amp; Dollars</div>
+    <div class="cs">ActionBy ownership &middot; who holds the execution miss</div>
+    <div class="leg"><span><span class="lsq" style="background:#4A3FBF"></span>$ impact</span><span><span class="lsq" style="background:rgba(61,170,132,0.85)"></span>line count</span></div>
+    <div style="position:relative;width:100%;height:280px"><canvas id="poFuncChart" role="img" aria-label="PO Past Due by Function"></canvas></div>
   </div>
-
-  <!-- ── BINSTOCK PAST DUES ── -->
-  <hr class="divider">
-  <div class="section-label">Past Due Analysis — Binstock Orders (Ad-Hoc Replenishment)</div>
-  <div class="kpi-grid-2">
-    <div class="kpi">
-      <div class="kpi-label">Binstock Past Due Lines</div>
-      <div class="kpi-val a">1,974</div>
-      <div class="kpi-sub">of 3,179 total Binstock lines · 62.1%</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Binstock Past Due $</div>
-      <div class="kpi-val a">$1.20M</div>
-      <div class="kpi-sub">13.6% of total past due dollars · avg unit value $610</div>
-    </div>
+  <div class="cb">
+    <div class="ct">PO Past Due by Site &mdash; Top 10</div>
+    <div class="cs">Financial impact per Honeywell site</div>
+    <div style="position:relative;width:100%;height:280px"><canvas id="poSiteChart" role="img" aria-label="PO Past Due by Site"></canvas></div>
   </div>
+</div>
 
-  <div class="chart-grid">
-    <div class="chart-box">
-      <div class="ct">Binstock Past Due by Function — Lines &amp; Dollars</div>
-      <div class="cs">ActionBy ownership of bin replenishment misses</div>
-      <div class="leg">
-        <span><span class="lsq" style="background:#4A3FBF;"></span>$ impact</span>
-        <span><span class="lsq" style="background:rgba(61,170,132,0.85);"></span>line count</span>
-      </div>
-      <div style="position:relative;width:100%;height:260px;">
-        <canvas id="binFuncChart" role="img" aria-label="Binstock Past Due by Function bar chart"></canvas>
-      </div>
-    </div>
-    <div class="chart-box">
-      <div class="ct">Binstock Past Due by Site — Top 10</div>
-      <div class="cs">Line volume per site · full bin map needed for rate analysis</div>
-      <div style="position:relative;width:100%;height:260px;">
-        <canvas id="binSiteChart" role="img" aria-label="Binstock Past Due by Site bar chart"></canvas>
-      </div>
-    </div>
+<hr class="divider">
+<div class="sl">Past Due Analysis &mdash; Binstock Orders (Ad-Hoc Replenishment)</div>
+<div class="kpi-grid-2">
+  <div class="kpi"><div class="kpi-label">Binstock Past Due Lines</div><div class="kpi-val a">1,972</div><div class="kpi-sub">of 3,169 total Binstock lines &middot; 62.2%</div></div>
+  <div class="kpi"><div class="kpi-label">Binstock Past Due $</div><div class="kpi-val a">$1.3M</div><div class="kpi-sub">15.2% of total past due dollars</div></div>
+</div>
+
+<div class="cg">
+  <div class="cb">
+    <div class="ct">Binstock Past Due by Function &mdash; Lines &amp; Dollars</div>
+    <div class="cs">ActionBy ownership of bin replenishment misses</div>
+    <div class="leg"><span><span class="lsq" style="background:#4A3FBF"></span>$ impact</span><span><span class="lsq" style="background:rgba(61,170,132,0.85)"></span>line count</span></div>
+    <div style="position:relative;width:100%;height:260px"><canvas id="binFuncChart" role="img" aria-label="Binstock Past Due by Function"></canvas></div>
   </div>
-
-  <div class="footer-note">
-    <strong>Note on Binstock:</strong> Binstock orders are ad-hoc scan-triggered replenishments, not planned commitments. Past due lines represent replenishment cycles that have not yet completed. A full bin map is needed to calculate true stockout rates by site. This analysis will be enhanced as that data becomes available.
+  <div class="cb">
+    <div class="ct">Binstock Past Due by Site &mdash; Top 10</div>
+    <div class="cs">Line volume per site &middot; full bin map needed for rate analysis</div>
+    <div style="position:relative;width:100%;height:260px"><canvas id="binSiteChart" role="img" aria-label="Binstock Past Due by Site"></canvas></div>
   </div>
+</div>
 
-</div><!-- /dash -->
+<div class="fn"><strong>Note on Binstock:</strong> Binstock orders are ad-hoc scan-triggered replenishments under a 2-bin system, not planned commitments. Past due lines represent replenishment cycles that have not yet completed. A full bin map is needed to calculate true stockout rates by site. This analysis will be enhanced as that data becomes available.</div>
+<div class="rt">Last refreshed: April 15, 2026 &middot; Source: Working Honeywell KPI Dashboard.xlsx</div>
+
+</div>
 
 <script>
 Chart.register(ChartDataLabels);
-const gc = 'rgba(0,0,0,0.06)', tc = '#5F5E5A';
+const gc='rgba(0,0,0,0.06)',tc='#5F5E5A';
 
-/* ── Revenue Chart ── */
-const revDates = ['Jan 06','Jan 28','Feb 02','Feb 09','Feb 17','Feb 20','Feb 25','Mar 02','Mar 05','Mar 09','Mar 12','Mar 16','Mar 19','Mar 23','Mar 27','Mar 30','Apr 13'];
-const revAct   = [0.62,10.83,13.45,16.0,20.82,23.22,25.87,27.4,29.87,30.93,32.38,34.52,36.58,37.67,40.41,41.5,47.45];
-const revBase  = [0.62,null,null,null,16.33,17.22,19.26,21.53,24.86,25.91,27.5,28.56,30.14,31.2,33.29,33.81,39.96];
+new Chart(document.getElementById('revChart'),{type:'line',data:{labels:['Jan 06','Jan 12','Jan 28','Feb 02','Feb 03','Feb 09','Feb 10','Feb 17','Feb 19','Feb 20','Feb 23','Feb 24','Feb 25','Feb 26','Mar 02','Mar 03','Mar 04','Mar 05','Mar 09','Mar 12','Mar 13','Mar 16','Mar 17','Mar 18','Mar 19','Mar 23','Mar 27','Mar 30','Apr 13','Apr 15'],datasets:[
+  {label:'Actual',data:[0.62,2.37,10.83,13.45,13.68,16.0,16.17,20.82,22.69,23.22,23.97,24.54,25.87,26.37,27.4,27.71,27.71,29.87,30.93,32.38,33.17,34.52,34.97,36.0,36.58,37.67,40.41,41.5,47.45,48.35],borderColor:'#185FA5',backgroundColor:'rgba(24,95,165,0.07)',fill:true,tension:0.3,pointRadius:3,borderWidth:2.5,
+    datalabels:{display:ctx=>[0,29].includes(ctx.dataIndex),anchor:'top',align:'top',color:'#185FA5',font:{size:10,weight:'500'},formatter:v=>'$'+v+'M'}},
+  {label:'Baseline',data:[0.62,null,null,null,null,null,null,16.33,16.91,17.22,18.99,18.99,19.26,19.72,21.53,21.53,24.33,24.86,25.91,27.5,28.03,28.56,28.56,28.6,30.14,31.2,33.29,33.81,39.96,40.59],borderColor:'#AAAAAA',borderDash:[5,3],tension:0.3,pointRadius:0,borderWidth:1.5,spanGaps:true,datalabels:{display:false}}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{}},
+  scales:{x:{ticks:{color:tc,font:{size:9},maxRotation:45,autoSkip:true,maxTicksLimit:10},grid:{color:gc}},
+           y:{ticks:{color:tc,font:{size:10},callback:v=>'$'+v+'M'},grid:{color:gc}}}  }});
 
-new Chart(document.getElementById('revChart'), {
-  type: 'line',
-  data: { labels: revDates, datasets: [
-    { label: 'Actual', data: revAct, borderColor: '#185FA5', backgroundColor: 'rgba(24,95,165,0.07)',
-      fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2.5,
-      datalabels: { display: ctx => [0, revAct.length-1].includes(ctx.dataIndex),
-        anchor: 'top', align: 'top', color: '#185FA5', font: { size: 10, weight: '500' },
-        formatter: v => '$' + v + 'M' } },
-    { label: 'Baseline', data: revBase, borderColor: '#AAAAAA', borderDash: [5,3],
-      tension: 0.3, pointRadius: 0, borderWidth: 1.5, spanGaps: true,
-      datalabels: { display: ctx => ctx.dataIndex === revBase.length - 1 && revBase[ctx.dataIndex] !== null,
-        anchor: 'bottom', align: 'bottom', color: '#888780', font: { size: 10 },
-        formatter: v => v ? 'Plan $' + v + 'M' : '' } }
-  ]},
-  options: { responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, datalabels: {} },
-    scales: {
-      x: { ticks: { color: tc, font: { size: 9 }, maxRotation: 45, autoSkip: true, maxTicksLimit: 10 }, grid: { color: gc } },
-      y: { ticks: { color: tc, font: { size: 10 }, callback: v => '$' + v + 'M' }, grid: { color: gc } }
-    }}
-});
+new Chart(document.getElementById('pgmChart'),{type:'line',data:{labels:['Jan 06','Jan 12','Jan 28','Feb 02','Feb 03','Feb 09','Feb 10','Feb 17','Feb 19','Feb 20','Feb 23','Feb 24','Feb 25','Feb 26','Mar 02','Mar 03','Mar 04','Mar 05','Mar 09','Mar 12','Mar 13','Mar 16','Mar 17','Mar 18','Mar 19','Mar 23','Mar 27','Mar 30','Apr 13','Apr 15'],datasets:[
+  {label:'PGM',data:[27.7,7.5,32.4,30.2,28.5,27.1,26.7,28.2,28.2,28.1,28.1,28.2,28.5,28.4,28.6,28.5,28.7,29.0,29.2,28.8,28.2,27.4,27.2,27.2,26.8,26.7,26.3,26.5,26.5,26.5],borderColor:'#0F7A58',backgroundColor:'rgba(15,122,88,0.07)',fill:true,tension:0.3,pointRadius:3,borderWidth:2.5,
+    datalabels:{display:ctx=>[0,1,29].includes(ctx.dataIndex),anchor:'top',align:'top',color:'#0F7A58',font:{size:10,weight:'500'},formatter:v=>v+'%'}},
+  {label:'Baseline',data:[27.7,null,null,null,null,null,null,24.9,24.8,24.9,25.4,25.4,25.4,25.3,25.3,25.3,24.2,24.2,24.2,24.2,24.2,24.2,24.5,24.2,24.2,24.2,24.2,24.2,24.1,24.1],borderColor:'#AAAAAA',borderDash:[5,3],tension:0.3,pointRadius:0,borderWidth:1.5,spanGaps:true,datalabels:{display:false}}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{}},
+  scales:{x:{ticks:{color:tc,font:{size:9},maxRotation:45,autoSkip:true,maxTicksLimit:10},grid:{color:gc}},
+           y:{min:20,max:35,ticks:{color:tc,font:{size:10},callback:v=>v+'%'},grid:{color:gc}}  }}});
 
-/* ── PGM Chart ── */
-const pgmDates = ['Jan 06','Jan 28','Feb 02','Feb 09','Feb 17','Feb 25','Mar 02','Mar 05','Mar 09','Mar 12','Mar 16','Mar 19','Mar 23','Mar 27','Mar 30','Apr 13'];
-const pgmAct   = [27.7,32.4,30.2,27.1,28.2,28.5,28.6,29.0,29.2,28.8,27.4,26.8,26.7,26.3,26.5,26.5];
-const pgmBase  = [null,null,null,null,24.9,25.4,25.3,24.2,24.2,24.2,24.2,24.2,24.2,24.2,24.2,24.1];
+new Chart(document.getElementById('poFuncChart'),{type:'bar',data:{labels:['SUPPLY CHAIN','QA','OPS','PandE','SALES','SPS RISK','CPM','GTS','EHS'],datasets:[
+  {label:'$',data:[4.26,1.64,0.75,0.27,0.11,0.04,0.03,0.01,0.0],backgroundColor:'#4A3FBF',xAxisID:'xD',
+    datalabels:{display:ctx=>ctx.dataIndex<4,anchor:'end',align:'right',color:'#4A3FBF',font:{size:9,weight:'500'},formatter:v=>'$'+v+'M'}},
+  {label:'Lines',data:[1363,908,408,177,72,3,30,7,2],backgroundColor:'rgba(61,170,132,0.80)',xAxisID:'xL',
+    datalabels:{display:ctx=>ctx.dataIndex<4,anchor:'end',align:'right',color:'#0F6E56',font:{size:9},formatter:v=>v+' lines'}}
+]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{}},
+  scales:{y:{ticks:{color:tc,font:{size:11}},grid:{color:gc}},
+           xD:{position:'bottom',ticks:{color:'#4A3FBF',font:{size:9},callback:v=>'$'+v+'M'},grid:{color:gc}},
+           xL:{position:'top',ticks:{color:'#0F6E56',font:{size:9},callback:v=>v},grid:{display:false}}  }}});
 
-new Chart(document.getElementById('pgmChart'), {
-  type: 'line',
-  data: { labels: pgmDates, datasets: [
-    { label: 'PGM %', data: pgmAct, borderColor: '#0F7A58', backgroundColor: 'rgba(15,122,88,0.07)',
-      fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2.5,
-      datalabels: { display: ctx => [0, 1, pgmAct.length-1].includes(ctx.dataIndex),
-        anchor: 'top', align: 'top', color: '#0F7A58', font: { size: 10, weight: '500' },
-        formatter: v => v + '%' } },
-    { label: 'Baseline', data: pgmBase, borderColor: '#AAAAAA', borderDash: [5,3],
-      tension: 0.3, pointRadius: 0, borderWidth: 1.5, spanGaps: true,
-      datalabels: { display: false } }
-  ]},
-  options: { responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, datalabels: {} },
-    scales: {
-      x: { ticks: { color: tc, font: { size: 9 }, maxRotation: 45, autoSkip: true, maxTicksLimit: 10 }, grid: { color: gc } },
-      y: { min: 20, max: 35, ticks: { color: tc, font: { size: 10 }, callback: v => v + '%' }, grid: { color: gc } }
-    }}
-});
+const psc=['#C0392B','#E07050','#E07050','#185FA5','#185FA5','#185FA5','#185FA5','#185FA5','#185FA5','#185FA5'];
+new Chart(document.getElementById('poSiteChart'),{type:'bar',data:{labels:['Engines','Sky Harbor RandO','ERDC','Tempe','ARDC','Torrance','Mexicali','Toronto','Rocky Mount','SARL'],datasets:[
+  {label:'PO Past Due $',data:[2.724,0.748,0.548,0.536,0.407,0.323,0.264,0.262,0.259,0.187],backgroundColor:psc,
+    datalabels:{anchor:'end',align:'right',color:ctx=>psc[ctx.dataIndex],font:{size:9,weight:'500'},formatter:v=>'$'+Math.round(v*1000)+'K'}}
+]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{}},
+  scales:{y:{ticks:{color:tc,font:{size:10}},grid:{color:gc}},
+           x:{ticks:{color:tc,font:{size:9},callback:v=>'$'+v+'M'},grid:{color:gc}}  }}});
 
-/* ── PO Function Chart ── */
-new Chart(document.getElementById('poFuncChart'), {
-  type: 'bar',
-  data: { labels: ['Supply Chain','QA','OPS','P&E','Sales','SPS Risk','CPM','GTS'],
-    datasets: [
-      { label: '$ Impact', data: [3.98,1.87,1.15,0.48,0.08,0.04,0.02,0.01],
-        backgroundColor: '#4A3FBF', xAxisID: 'xD',
-        datalabels: { display: ctx => ctx.dataIndex < 4, anchor: 'end', align: 'right',
-          color: '#4A3FBF', font: { size: 9, weight: '500' }, formatter: v => '$' + v + 'M' } },
-      { label: 'Lines', data: [1059,878,499,467,73,17,26,6],
-        backgroundColor: 'rgba(61,170,132,0.80)', xAxisID: 'xL',
-        datalabels: { display: ctx => ctx.dataIndex < 4, anchor: 'end', align: 'right',
-          color: '#0F6E56', font: { size: 9 }, formatter: v => v + ' lines' } }
-    ]},
-  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, datalabels: {} },
-    scales: {
-      y:  { ticks: { color: tc, font: { size: 11 } }, grid: { color: gc } },
-      xD: { position: 'bottom', ticks: { color: '#4A3FBF', font: { size: 9 }, callback: v => '$' + v + 'M' }, grid: { color: gc } },
-      xL: { position: 'top', ticks: { color: '#0F6E56', font: { size: 9 }, callback: v => v }, grid: { display: false } }
-    }}
-});
+new Chart(document.getElementById('binFuncChart'),{type:'bar',data:{labels:['SUPPLY CHAIN','OPS','QA','PandE','CPM','SALES','SPS RISK'],datasets:[
+  {label:'$',data:[701.0,212.6,273.9,75.0,5.0,1.0,1.0],backgroundColor:'#4A3FBF',xAxisID:'xD',
+    datalabels:{anchor:'end',align:'right',color:'#4A3FBF',font:{size:9,weight:'500'},formatter:v=>'$'+v+'K'}},
+  {label:'Lines',data:[1250,309,298,84,29,1,1],backgroundColor:'rgba(61,170,132,0.80)',xAxisID:'xL',
+    datalabels:{anchor:'end',align:'right',color:'#0F6E56',font:{size:9},formatter:v=>v+' lines'}}
+]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{}},
+  scales:{y:{ticks:{color:tc,font:{size:11}},grid:{color:gc}},
+           xD:{position:'bottom',ticks:{color:'#4A3FBF',font:{size:9},callback:v=>'$'+v+'K'},grid:{color:gc}},
+           xL:{position:'top',ticks:{color:'#0F6E56',font:{size:9},callback:v=>v},grid:{display:false}}  }}});
 
-/* ── PO Site Chart ── */
-const poSiteLabels = ['Engines','Sky Harbor R&O','ERDC','Tempe','ARDC','Rocky Mount','Mexicali','Torrance','Toronto','Raunheim'];
-const poSiteVals   = [2.74,0.854,0.725,0.524,0.461,0.354,0.323,0.269,0.252,0.208];
-const poSiteColors = poSiteVals.map((v,i) => i===0 ? '#C0392B' : i < 3 ? '#E07050' : '#185FA5');
-
-new Chart(document.getElementById('poSiteChart'), {
-  type: 'bar',
-  data: { labels: poSiteLabels, datasets: [{
-    label: 'PO Past Due $', data: poSiteVals, backgroundColor: poSiteColors,
-    datalabels: { anchor: 'end', align: 'right',
-      color: ctx => poSiteColors[ctx.dataIndex], font: { size: 9, weight: '500' },
-      formatter: v => '$' + (v * 1000).toFixed(0) + 'K' }
-  }]},
-  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, datalabels: {} },
-    scales: {
-      y: { ticks: { color: tc, font: { size: 10 } }, grid: { color: gc } },
-      x: { max: 3.4, ticks: { color: tc, font: { size: 9 }, callback: v => '$' + v + 'M' }, grid: { color: gc } }
-    }}
-});
-
-/* ── Bin Function Chart ── */
-new Chart(document.getElementById('binFuncChart'), {
-  type: 'bar',
-  data: { labels: ['Supply Chain','P&E','OPS','QA','CPM','SPS Risk'],
-    datasets: [
-      { label: '$ Impact', data: [627,189,154,223,6,2],
-        backgroundColor: '#4A3FBF', xAxisID: 'xD',
-        datalabels: { anchor: 'end', align: 'right',
-          color: '#4A3FBF', font: { size: 9, weight: '500' }, formatter: v => '$' + v + 'K' } },
-      { label: 'Lines', data: [958,433,285,258,35,3],
-        backgroundColor: 'rgba(61,170,132,0.80)', xAxisID: 'xL',
-        datalabels: { anchor: 'end', align: 'right',
-          color: '#0F6E56', font: { size: 9 }, formatter: v => v + ' lines' } }
-    ]},
-  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, datalabels: {} },
-    scales: {
-      y:  { ticks: { color: tc, font: { size: 11 } }, grid: { color: gc } },
-      xD: { position: 'bottom', ticks: { color: '#4A3FBF', font: { size: 9 }, callback: v => '$' + v + 'K' }, grid: { color: gc } },
-      xL: { position: 'top', ticks: { color: '#0F6E56', font: { size: 9 }, callback: v => v }, grid: { display: false } }
-    }}
-});
-
-/* ── Bin Site Chart ── */
-new Chart(document.getElementById('binSiteChart'), {
-  type: 'bar',
-  data: { labels: ['Sky Harbor R&O','Tempe','Raunheim','Engines','Rocky Mount','Mexicali','Torrance','Hill AFB','Engines Kit.','Urbana'],
-    datasets: [{
-      label: 'Binstock Past Due Lines',
-      data: [511,306,248,210,125,115,114,111,96,80],
-      backgroundColor: 'rgba(186,117,23,0.78)',
-      datalabels: { anchor: 'end', align: 'right',
-        color: '#854F0B', font: { size: 9, weight: '500' }, formatter: v => v + ' lines' }
-    }]},
-  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, datalabels: {} },
-    scales: {
-      y: { ticks: { color: tc, font: { size: 10 } }, grid: { color: gc } },
-      x: { max: 600, ticks: { color: tc, font: { size: 9 } }, grid: { color: gc } }
-    }}
-});
+new Chart(document.getElementById('binSiteChart'),{type:'bar',data:{labels:['Sky Harbor RandO','Tempe','Engines','Raunheim','Rocky Mount','Torrance','Mexicali','Hill AFB','Engines Kitting','Urbana'],datasets:[
+  {label:'Lines',data:[497,318,235,235,125,115,112,110,90,86],backgroundColor:'rgba(186,117,23,0.78)',
+    datalabels:{anchor:'end',align:'right',color:'#854F0B',font:{size:9,weight:'500'},formatter:v=>v+' lines'}}
+]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{}},
+  scales:{y:{ticks:{color:tc,font:{size:10}},grid:{color:gc}},
+           x:{ticks:{color:tc,font:{size:9}},grid:{color:gc}}  }}});
 </script>
 </body>
 </html>
